@@ -111,6 +111,23 @@ def xblock_has_own_studio_page(xblock, parent_xblock=None):
     return xblock.has_children
 
 
+def xblock_studio_library(xblock, parent_xblock=None):
+    """
+    Returns the Studio editing URL for the specified xblock.
+    """
+    if not xblock_has_own_studio_page(xblock, parent_xblock):
+        return None
+    category = xblock.category
+    if category == 'library_content':
+        v = {}
+        for field in xblock.fields.values():
+            v[field.name] = field.read_json(xblock)
+        l = v.get("source_library_id")
+        c = v.get("content_name")
+        if l and c:
+            return l + "/" +c;
+    return ""
+
 def xblock_studio_url(xblock, parent_xblock=None):
     """
     Returns the Studio editing URL for the specified xblock.

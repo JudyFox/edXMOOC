@@ -2797,6 +2797,10 @@ msgid "Enter the number of components to display to each student."
 msgstr ""
 
 #: common/lib/xmodule/xmodule/library_content_module.py
+msgid "Enter the display name of the component from library."
+msgstr ""
+
+#: common/lib/xmodule/xmodule/library_content_module.py
 msgid "Problem Type"
 msgstr ""
 

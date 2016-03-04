@@ -93,9 +93,15 @@ class LibraryContentFields(object):
         default=1,
         scope=Scope.settings,
     )
+    content_name = String(
+        display_name=_("Content"),
+        help=_("Enter the display name of the component from library"),
+        default="",
+        scope=Scope.settings,
+    )
     capa_type = String(
-        display_name=_("Problem Type"),
-        help=_('Choose a problem type to fetch from the library. If "Any Type" is selected no filtering is applied.'),
+        display_name=_("Content Type"),
+        help=_('Choose a content type to fetch from the library. If "Any Type" is selected no filtering is applied.'),
         default=ANY_CAPA_TYPE_VALUE,
         values=_get_capa_types(),
         scope=Scope.settings,
@@ -213,6 +219,11 @@ class LibraryContentModule(LibraryContentFields, XModule, StudioEditableModule):
                     result=format_block_keys(selected),
                     added=format_block_keys(added_block_keys)
                 )
+
+        if self.content_name:
+            for s in selected:
+                print s
+
         # Save our selections to the user state, to ensure consistency:
         self.selected = list(selected)  # TODO: this doesn't save from the LMS "Progress" page.
         # Cache the results
@@ -518,7 +529,7 @@ class LibraryContentDescriptor(LibraryContentFields, MakoModuleDescriptor, XmlDe
         """
         old_source_library_id = old_metadata.get('source_library_id', [])
         if (old_source_library_id != self.source_library_id or
-                old_metadata.get('capa_type', ANY_CAPA_TYPE_VALUE) != self.capa_type):
+                old_metadata.get('capa_type', ANY_CAPA_TYPE_VALUE) != self.capa_type or old_metadata.get('content_name', []) != self.content_name):
             try:
                 self.refresh_children()
             except ValueError:
